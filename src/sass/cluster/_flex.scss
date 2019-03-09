@@ -1,0 +1,96 @@
+$justify-content: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  around: space-around,
+  between: space-between
+);
+
+$align-items: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  stretch: stretch,
+  baseline: baseline
+);
+
+$align-content: (
+  stretch: stretch,
+  center: center,
+  around: space-around,
+  between: space-between
+);
+
+$flex-flow: (
+  row: row,
+  row-rev: row-reverse,
+  col: column,
+  col-rev: column-reverse
+);
+
+$flex-wrap: (
+  wrap: wrap,
+  nowrap: nowrap,
+  wrap-rev: wrap-reverse
+);
+
+$align-self: (
+  start: flex-start,
+  end: flex-end,
+  center: center
+);
+
+$item-props: (
+  order: order,
+  flex-shrink: flex-shrink,
+  flex-grow: flex-grow
+);
+
+@each $bp-key, $bp-val in $breakpoints {
+  $bp-fix: bp-fix($bp-key);
+  @media (min-width: $bp-val) {
+    @each $abbrev, $prop in $justify-content {
+      .justify-content-#{$bp-fix}#{$abbrev} {
+        justify-content: $prop !important;
+      }
+    }
+
+    @each $abbrev, $prop in $align-items {
+      .align-items-#{$bp-fix}#{$abbrev} {
+        align-items: $prop !important;
+      }
+    }
+
+    @each $abbrev, $prop in $align-content {
+      .align-content-#{$bp-fix}#{$abbrev} {
+        align-content: $prop !important;
+      }
+    }
+
+    @each $abbrev, $prop in $flex-flow {
+      .flex-#{$bp-fix}#{$abbrev} {
+        flex-flow: $prop !important;
+      }
+    }
+
+    @each $abbrev, $prop in $flex-wrap {
+      .flex-#{$bp-fix}#{$abbrev} {
+        flex-wrap: $prop !important;
+      }
+    }
+
+    @each $abbrev, $prop in $align-self {
+      .align-self-#{$bp-fix}#{$abbrev} {
+        align-self: $prop !important;
+      }
+    }
+
+    @each $abbrev, $prop in $item-props {
+      @for $i from 0 through 5 {
+        .#{$abbrev}-#{$bp-fix}#{$i} {
+          #{$prop}: $i !important;
+        }
+      }
+    }
+  }
+}

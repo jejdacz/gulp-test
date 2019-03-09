@@ -1,0 +1,9 @@
+@import "bootstrap-reboot.scss";
+@import "colors.scss";
+
+$dark:black;
+
+body {
+    background-color:$dark;
+    color:white;
+}

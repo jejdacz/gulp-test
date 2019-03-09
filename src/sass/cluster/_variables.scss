@@ -1,0 +1,75 @@
+$line-height: 1.5 !default;
+$headings-line-height: 1.25 !default;
+
+$font-scale: () !default;
+$font-scale: map-merge(
+  (
+    0: 0.75rem,
+    1: 1rem,
+    2: 1.25rem,
+    3: 1.5rem,
+    4: 1.75rem,
+    5: 2rem,
+    6: 2.5rem,
+    7: 3rem,
+    8: 4rem,
+    9: 5rem
+  ),
+  $font-scale
+);
+
+$dim-scale: () !default;
+$dim-scale: map-merge(
+  (
+    15: 15rem,
+    30: 30rem,
+    45: 45rem,
+    60: 60rem,
+    75: 75rem,
+    90: 90rem
+  ),
+  $dim-scale
+);
+
+$scale: () !default;
+$scale: map-merge(
+  (
+    0: 0rem,
+    1: 0.25rem,
+    2: 0.5rem,
+    3: 0.75rem,
+    4: 1rem,
+    5: 1.5rem,
+    6: 3rem,
+    7: 4.5rem,
+    8: 6rem,
+    9: 7.5rem,
+    10: 9rem
+  ),
+  $scale
+);
+
+:root {
+  @each $key, $val in $scale {
+    --size-#{$key}: #{$val};
+  }
+}
+
+$breakpoints: (
+  0: 0,
+  30: 30rem,
+  45: 45rem,
+  60: 60rem,
+  75: 75rem
+) !default;
+
+@function bp-fix($bp) {
+  @if $bp == 0 {
+    @return "";
+  } @else {
+    $bp: #{$bp}-;
+    @return $bp;
+  }
+}
+
+$grid-cols: 12 !default;

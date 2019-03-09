@@ -1,0 +1,17 @@
+@for $i from 0 through 10 {
+  .op-#{i} {
+    opacity: ($i/10);
+  }
+}
+
+.vs-visible {
+  visibility: visible;
+}
+
+.vs-hidden {
+  visibility: hidden;
+}
+
+.vs-collapse {
+  visibility: collapse;
+}

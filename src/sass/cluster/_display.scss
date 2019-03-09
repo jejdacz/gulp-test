@@ -1,0 +1,36 @@
+@each $bp-key, $bp-val in $breakpoints {
+  $bp-fix: bp-fix($bp-key);
+  @media (min-width: $bp-val) {
+    .d-#{$bp-fix}none {
+      display: none !important;
+    }
+
+    .d-#{$bp-fix}block {
+      display: block !important;
+    }
+
+    .d-#{$bp-fix}flex {
+      display: flex !important;
+    }
+
+    .d-#{$bp-fix}inline {
+      display: inline !important;
+    }
+
+    .d-#{$bp-fix}inline-block {
+      display: inline-block !important;
+    }
+
+    .d-#{$bp-fix}table {
+      display: table !important;
+    }
+
+    .d-#{$bp-fix}table-row {
+      display: table-row !important;
+    }
+
+    .d-#{$bp-fix}table-cell {
+      display: table-cell !important;
+    }
+  }
+}

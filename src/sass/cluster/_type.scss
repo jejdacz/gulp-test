@@ -1,0 +1,54 @@
+body {
+  line-height: $line-height;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  line-height: $headings-line-height;
+}
+
+$text-align: (
+  center: center,
+  right: right,
+  left: left,
+  justify: justify
+);
+
+@each $bp-key, $bp-val in $breakpoints {
+  $bp-fix: bp-fix($bp-key);
+  @media (min-width: $bp-val) {
+    @each $key, $val in $font-scale {
+      .fs-#{$bp-fix}#{$key} {
+        font-size: $val !important;
+      }
+    }
+
+    @each $abbrev, $val in $text-align {
+      .text-#{$bp-fix}#{$abbrev} {
+        text-align: $val !important;
+      }
+    }
+  }
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}

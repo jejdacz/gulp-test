@@ -1,0 +1,13 @@
+@each $abbrev, $val in $dim-scale {
+  .mw-#{$abbrev} {
+    max-width: $val !important;
+  }
+
+  .mh-#{$abbrev} {
+    max-height: $val !important;
+  }
+}
+
+.w-100 {
+  width: 100%;
+}

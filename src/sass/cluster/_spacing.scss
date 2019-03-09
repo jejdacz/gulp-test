@@ -1,0 +1,52 @@
+@each $bp-key, $bp-val in $breakpoints {
+  $bp-fix: bp-fix($bp-key);
+  @media (min-width: $bp-val) {
+    @each $prop, $prop-abbrev in (margin: m, padding: p) {
+      @each $size, $value in $scale {
+        .#{$prop-abbrev}-#{$bp-fix}#{$size} {
+          #{$prop}: $value !important;
+        }
+
+        .#{$prop-abbrev}t-#{$bp-fix}#{$size},
+        .#{$prop-abbrev}y-#{$bp-fix}#{$size} {
+          #{$prop}-top: $value !important;
+        }
+
+        .#{$prop-abbrev}r-#{$bp-fix}#{$size},
+        .#{$prop-abbrev}x-#{$bp-fix}#{$size} {
+          #{$prop}-right: $value !important;
+        }
+
+        .#{$prop-abbrev}b-#{$bp-fix}#{$size},
+        .#{$prop-abbrev}y-#{$bp-fix}#{$size} {
+          #{$prop}-bottom: $value !important;
+        }
+
+        .#{$prop-abbrev}l-#{$bp-fix}#{$size},
+        .#{$prop-abbrev}x-#{$bp-fix}#{$size} {
+          #{$prop}-left: $value !important;
+        }
+      }
+    }
+
+    .m-#{$bp-fix}auto {
+      margin: auto !important;
+    }
+    .mt-#{$bp-fix}auto,
+    .my-#{$bp-fix}auto {
+      margin-top: auto !important;
+    }
+    .mr-#{$bp-fix}auto,
+    .mx-#{$bp-fix}auto {
+      margin-right: auto !important;
+    }
+    .mb-#{$bp-fix}auto,
+    .my-#{$bp-fix}auto {
+      margin-bottom: auto !important;
+    }
+    .ml-#{$bp-fix}auto,
+    .mx-#{$bp-fix}auto {
+      margin-left: auto !important;
+    }
+  }
+}
