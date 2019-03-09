@@ -3,21 +3,22 @@ const { series, parallel, task, watch, src, dest } = require("gulp");
 var del = require("del");
 var sass = require("gulp-sass");
 var concat = require("gulp-concat");
-var babel = require("gulp-babel");
 var uglify = require("gulp-uglify");
 var pipeline = require("readable-stream").pipeline;
 var browserify = require('browserify');
-var tap = require("gulp-tap");
 var source = require("vinyl-source-stream");
 var buffer = require("vinyl-buffer");
 var sourcemaps = require("gulp-sourcemaps");
+var babelify = require("babelify");
+var gulpif = require("gulp-if");
+
+const prod = process.env.NODE_ENV === "production";
 
 const files = {
   sassEntry:"src/sass/style.scss",
-  sass:"src/**/*.{scss,css}",
-  cssBundle:"bundle.css",
+  sass:"src/**/*.{scss,css}",  
   cssBundlePath:"dist",  
-  jsEntry:"dist/js/script.js",
+  jsEntry:"src/js/script.js",
   js:"src/**/*.js",
   jsBundle:"bundle.js",
   jsBundlePath:"dist",
@@ -27,53 +28,33 @@ const files = {
 
 sass.compiler = require("node-sass");
 
-const compileSassDev = function () {
+const compileSass = function () {
   return src(files.sassEntry)
-    .pipe(sass().on("error", sass.logError))
-    .pipe(concat(files.cssBundle))
-    .pipe(dest(files.cssBundlePath))
-}
-
-const compileSassProd = function () {
-  return src(files.sassEntry)
+    .pipe(sourcemaps.init())
     .pipe(sass().on("error", sass.logError))    
-    .pipe(postcss([require("autoprefixer"), require("cssnano")]))
-    .pipe(concat(files.cssBundle))
+    .pipe(gulpif(prod,postcss([require("autoprefixer"), require("cssnano")])))
+    .pipe(sourcemaps.write("./"))   
     .pipe(dest(files.cssBundlePath))
 }
 
 const watchSass = function() {
-   watch(files.sass, compileSassDev);
+   watch(files.sass, compileSass);
 }
 
-const compileJS = function() {
-  return src(files.js)
-    .pipe(babel({presets:["@babel/env"]}))
-    .pipe(dest(files.jsBundlePath))
-}
-
-const bundleJSprod = function() {
-  return browserify({entries: files.jsEntry, debug:true}).bundle()  
+const bundleJS = function() {
+  return browserify({entries: files.jsEntry, debug:true})
+  .transform("babelify", {presets: ["@babel/preset-env"]})
+  .bundle()  
   .pipe(source(files.jsBundle))
   .pipe(buffer())
-  .pipe(uglify())
-  .pipe(sourcemaps.init({loadMaps:true}))
+  .pipe(sourcemaps.init({loadMaps:true}))  
+  .pipe(gulpif(prod,uglify()))  
   .pipe(sourcemaps.write("./"))
   .pipe(dest(files.jsBundlePath));
 }
 
-const bundleJSdev = function() {
-  return browserify({entries: files.jsEntry, debug:true}).bundle()  
-  .pipe(source(files.jsBundle))  
-  .pipe(dest(files.jsBundlePath));
-}
-
-const cleanJS = function() {
-  return del(["dist/**/!(bundle).js","dist/js"]);
-}
-
 const watchJS = function() {
-  return watch(files.js, series(compileJS,bundleJSdev,cleanJS))
+  return watch(files.js, bundleJS)
 }
 
 const html = function() {
@@ -85,14 +66,14 @@ const watchHtml = function(){
   return watch(files.html,html)
 }
 
-const clean = function() {
+const cleanDist = function() {
   return del(files.dist);
 }
 
-const buildDev = series(clean,parallel(series(compileJS,bundleJSdev,cleanJS),compileSassDev,html));
+const build = series(cleanDist,parallel(bundleJS,compileSass,html));
 
 const watchAll = parallel(watchJS,watchSass,watchHtml);
 
 
-exports.watch = series(buildDev,watchAll);
-exports.build = series(clean,parallel(series(compileJS,bundleJSprod,cleanJS),compileSassProd,html));
+exports.watch = series(build,watchAll);
+exports.build = build;
