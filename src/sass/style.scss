@@ -1,9 +1,14 @@
-@import "bootstrap-reboot.scss";
-@import "colors.scss";
+@import "./bootstrap-reboot.scss";
+@import "./cluster/cluster.scss";
+@import "./colors.scss";
 
 $dark:black;
 
 body {
     background-color:$dark;
-    color:white;
+    color:red;
+}
+
+.heading {
+    color:lighten($dark,10);
 }

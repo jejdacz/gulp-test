@@ -1,1 +1,1 @@
-export default () => console.log('hihi');
+export default () => console.log('hihi!');
